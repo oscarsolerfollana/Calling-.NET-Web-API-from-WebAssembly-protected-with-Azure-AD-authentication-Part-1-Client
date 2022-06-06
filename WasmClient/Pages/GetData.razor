@@ -1,0 +1,27 @@
+﻿@page "/getdata"
+@using Microsoft.AspNetCore.Authorization
+@using WasmClient.Models
+@inject HttpClient Http
+@attribute [Authorize]
+
+<PageTitle>Connecting to API</PageTitle>
+
+<h1>Connecting to API</h1>
+
+
+@if(computers==null){
+    <p>Connecting...</p>
+}
+else{
+    <label>Machines started:</label> <label>@computers.Started</label><br />
+    <label>Machines stopped:</label> <label>@computers.Stopped</label>
+}
+
+@code {
+    Computers? computers = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        computers = await Http.GetFromJsonAsync<Computers>("Infrastructure");
+    }
+}
